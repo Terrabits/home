@@ -1,0 +1,50 @@
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>IoT</title>
+  <meta name="description" content="IoT">
+  <meta name="author" content="Nick Lalic">
+  <style>
+    #toggle-button {
+      font-size: 36px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="row">
+    <button id='toggle-work-lamp-button'>Toggle work lamp</button>
+  </div>
+  <br />
+  <div class="row">
+    <button id='toggle-floor-lamp-button'>Toggle floor lamp</button>
+  </div>
+  <script>
+    const websocket    = new WebSocket('ws://192.168.86.29:8080/publish');
+    const workButton   = document.getElementById('toggle-work-lamp-button');
+    workButton.onclick = async (event) => {
+      event.preventDefault();
+      if (websocket.readyState !== WebSocket.OPEN) {
+        // lost websocket. reload page.
+        location.reload();
+        return;
+      }
+
+      // toggle work lamp
+      await websocket.send('work-lamp/toggle ');
+    };
+    const floorButton = document.getElementById('toggle-floor-lamp-button');
+    floorButton.onclick = async (event) => {
+      event.preventDefault();
+      if (websocket.readyState !== WebSocket.OPEN) {
+        // lost websocket. reload page.
+        location.reload();
+        return;
+      }
+
+      // toggle floor lamp
+      await websocket.send('floor-lamp/toggle ');
+    };
+  </script>
+</body>
+</html>
